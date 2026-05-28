@@ -142,7 +142,7 @@ export default function HomePage() {
     >
       <div className="w-full max-w-[420px] flex flex-col gap-4">
         <header className="flex items-center gap-2.5 pt-2">
-          <LockInLogo size={30} />
+          <LockInLogo size={38} />
           <h1 className="text-2xl font-semibold tracking-tight text-text">Lock In</h1>
         </header>
 
