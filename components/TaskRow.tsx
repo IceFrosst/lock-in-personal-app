@@ -11,10 +11,10 @@ type Props = {
   completing?: boolean
 }
 
-const PRIORITY_DOT: Record<Task['priority'], string> = {
-  low: 'bg-priority-low',
-  medium: 'bg-priority-medium',
-  high: 'bg-priority-high',
+const PRIORITY_ACCENT: Record<Task['priority'], string> = {
+  low: 'bg-prio-low',
+  medium: 'bg-prio-medium',
+  high: 'bg-prio-high',
 }
 
 function formatDueChip(due: string | null): { text: string; overdue: boolean } | null {
@@ -70,8 +70,8 @@ export default function TaskRow({ task, onToggle, onLongPress, completing }: Pro
 
   return (
     <div
-      className={`flex items-start gap-3 py-2.5 px-2 rounded-xl transition-colors ${
-        pressing ? 'bg-surface-elevated' : ''
+      className={`relative flex items-start gap-3 py-3 pl-5 pr-3 mb-2 rounded-xl overflow-hidden transition-colors ${
+        pressing ? 'bg-surface-elevated' : 'bg-surface'
       } ${completing ? 'lock-in-task-complete' : ''}`}
       onPointerDown={startPress}
       onPointerUp={endPress}
@@ -79,6 +79,11 @@ export default function TaskRow({ task, onToggle, onLongPress, completing }: Pro
       onPointerCancel={endPress}
       onContextMenu={(e) => e.preventDefault()}
     >
+      <span
+        aria-hidden
+        className={`absolute left-0 top-0 bottom-0 w-1.5 ${PRIORITY_ACCENT[task.priority]}`}
+      />
+
       <button
         type="button"
         onClick={() => {
@@ -101,10 +106,6 @@ export default function TaskRow({ task, onToggle, onLongPress, completing }: Pro
           className={completing ? 'lock-in-check-pop' : ''}
         />
       </button>
-
-      <span
-        className={`mt-2 shrink-0 h-1.5 w-1.5 rounded-full ${PRIORITY_DOT[task.priority]}`}
-      />
 
       <div className="flex-1 min-w-0">
         <p

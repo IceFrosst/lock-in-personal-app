@@ -15,9 +15,9 @@ type Props = {
 }
 
 const PRIORITY_OPTIONS: { value: Priority; label: string; dot: string }[] = [
-  { value: 'low', label: 'Low', dot: 'bg-priority-low' },
-  { value: 'medium', label: 'Med', dot: 'bg-priority-medium' },
-  { value: 'high', label: 'High', dot: 'bg-priority-high' },
+  { value: 'low', label: 'Low', dot: 'bg-prio-low' },
+  { value: 'medium', label: 'Med', dot: 'bg-prio-medium' },
+  { value: 'high', label: 'High', dot: 'bg-prio-high' },
 ]
 
 function formatChip(value: string | null): string {
@@ -57,7 +57,15 @@ export default function AddTaskBar({ onAdd, disabled }: Props) {
   const [speechAvailable, setSpeechAvailable] = useState(false)
 
   const dateRef = useRef<HTMLInputElement | null>(null)
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
+
+  useEffect(() => {
+    const el = inputRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight}px`
+  }, [title])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -140,13 +148,20 @@ export default function AddTaskBar({ onAdd, disabled }: Props) {
 
   return (
     <form onSubmit={submit} className="w-full flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
+      <div className="flex items-end gap-2">
+        <textarea
+          ref={inputRef}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              submit()
+            }
+          }}
+          rows={1}
           placeholder="What do you need to lock in?"
-          className="flex-1 min-w-0 min-h-11 px-3 rounded-xl bg-surface border border-border focus:border-border-focus outline-none text-base text-text placeholder:text-text-low transition-colors"
+          className="flex-1 min-w-0 min-h-11 max-h-40 py-2.5 px-3 rounded-xl bg-surface border border-border focus:border-border-focus outline-none text-base text-text placeholder:text-text-low transition-colors resize-none leading-snug"
           disabled={disabled || adding}
         />
 

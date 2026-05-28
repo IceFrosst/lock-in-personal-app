@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { IconArchive, IconBoltFilled } from '@tabler/icons-react'
+import { IconArchive } from '@tabler/icons-react'
 import { createClient } from '@/lib/supabase/client'
 import AddTaskBar from '@/components/AddTaskBar'
 import TaskRow from '@/components/TaskRow'
+import LockInLogo from '@/components/LockInLogo'
 import { PRIORITY_RANK, type Priority, type Task } from '@/lib/types'
 
 function sortTasks(tasks: Task[]): Task[] {
@@ -140,8 +141,8 @@ export default function HomePage() {
       }}
     >
       <div className="w-full max-w-[420px] flex flex-col gap-4">
-        <header className="flex items-center gap-2 pt-2">
-          <IconBoltFilled size={28} className="text-gold" />
+        <header className="flex items-center gap-2.5 pt-2">
+          <LockInLogo size={30} />
           <h1 className="text-2xl font-semibold tracking-tight text-text">Lock In</h1>
         </header>
 
