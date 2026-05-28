@@ -148,7 +148,7 @@ export default function AddTaskBar({ onAdd, disabled }: Props) {
 
   return (
     <form onSubmit={submit} className="w-full flex flex-col gap-2">
-      <div className="flex items-end gap-2">
+      <div className="flex items-start gap-2">
         <textarea
           ref={inputRef}
           value={title}
