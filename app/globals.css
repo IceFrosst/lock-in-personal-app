@@ -40,18 +40,16 @@ input[type='date']::-webkit-calendar-picker-indicator {
   position: absolute;
   inset: 0;
   background-image: linear-gradient(
-    105deg,
-    #ffe066 0%,
-    #ffd700 20%,
-    #ffffff 40%,
-    #ffd700 55%,
-    #f5b800 72%,
-    #ffd700 86%,
-    #ffe066 100%
+    120deg,
+    #ffe680 0%,
+    #ffd700 25%,
+    #f5b800 50%,
+    #ffd700 75%,
+    #ffe680 100%
   );
-  background-size: 300% 300%;
+  background-size: 220% 220%;
   background-position: 0% 50%;
-  animation: lock-in-shimmer-strong 4s ease-in-out infinite;
+  animation: lock-in-shimmer 7s ease-in-out infinite;
   -webkit-mask: url('/bolt-mask.svg') center / 80% no-repeat;
   mask: url('/bolt-mask.svg') center / 80% no-repeat;
 }
@@ -84,15 +82,6 @@ input[type='date']::-webkit-calendar-picker-indicator {
   }
 }
 
-@keyframes lock-in-shimmer-strong {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
 
 @keyframes lock-in-check-pop {
   0% {

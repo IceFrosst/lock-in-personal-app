@@ -2,7 +2,7 @@ type Props = {
   size?: number
 }
 
-export default function LockInLogo({ size = 38 }: Props) {
+export default function LockInLogo({ size = 46 }: Props) {
   return (
     <span
       aria-hidden

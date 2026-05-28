@@ -97,26 +97,41 @@ export default function HomePage() {
   )
 
   const toggleComplete = useCallback(
-    (task: Task) => {
+    async (task: Task) => {
       setCompletingIds((prev) => {
         if (prev.has(task.id)) return prev
         const next = new Set(prev)
         next.add(task.id)
         return next
       })
-      void supabase
-        .schema('focus_gate')
-        .from('tasks')
-        .update({ is_completed: true })
-        .eq('id', task.id)
-      setTimeout(() => {
-        setTasks((prev) => prev.filter((t) => t.id !== task.id))
+
+      // Run DB write and animation timer in parallel — wait for both.
+      // If the write fails we roll back so a refresh doesn't resurface the task.
+      const [{ error }] = await Promise.all([
+        supabase
+          .schema('focus_gate')
+          .from('tasks')
+          .update({ is_completed: true })
+          .eq('id', task.id),
+        new Promise<void>((resolve) => setTimeout(resolve, 480)),
+      ])
+
+      if (error) {
         setCompletingIds((prev) => {
           const next = new Set(prev)
           next.delete(task.id)
           return next
         })
-      }, 480)
+        setError(error.message)
+        return
+      }
+
+      setTasks((prev) => prev.filter((t) => t.id !== task.id))
+      setCompletingIds((prev) => {
+        const next = new Set(prev)
+        next.delete(task.id)
+        return next
+      })
     },
     [supabase]
   )
@@ -142,7 +157,7 @@ export default function HomePage() {
     >
       <div className="w-full max-w-[420px] flex flex-col gap-4">
         <header className="flex items-center gap-2.5 pt-2">
-          <LockInLogo size={38} />
+          <LockInLogo size={46} />
           <h1 className="text-2xl font-semibold tracking-tight text-text">Lock In</h1>
         </header>
 
